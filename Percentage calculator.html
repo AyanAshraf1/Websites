@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percentage Calculator</title>
+  <style>
+    body {
+      background-color: #00ff00;
+      font-family: 'Impact', sans-serif;
+      color: black;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+    }
+    .container {
+      width: 100%;
+      max-width: 1300px;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 25px;
+      margin-top: 0;
+      margin-bottom: 40px;
+    }
+    button {
+      font-family: 'Impact', sans-serif;
+      font-size: 24px;
+      color: red;
+      background-color: blue;
+      border: none;
+      padding: 12px 30px;
+      margin: 15px 0 30px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      border-radius: 5px;
+      user-select: none;
+    }
+    button:hover,
+    button:focus {
+      background-color: red;
+      color: blue;
+      outline: none;
+    }
+    label {
+      font-family: 'Impact', sans-serif;
+      font-size: 28px;
+      margin-right: 10px;
+      user-select: none;
+    }
+    input[type="text"],
+    input[type="number"] {
+      font-family: 'Impact', sans-serif;
+      font-size: 25px;
+      padding: 6px 10px;
+      margin: 5px 15px 5px 0;
+      width: 250px;
+      max-width: 90vw;
+      box-sizing: border-box;
+      border-radius: 4px;
+      border: 2px solid #006400;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: #004b00;
+      outline: none;
+    }
+    .hidden {
+      display: none;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: max-content auto;
+      justify-content: center;
+      align-items: center;
+      gap: 10px 40px;
+      margin-bottom: 30px;
+    }
+    .marks-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr 2fr;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+    .marks-inputs {
+      display: grid;
+      grid-template-columns: 3fr 2fr 2fr;
+      justify-content: center;
+      align-items: center;
+      gap: 15px 40px;
+      margin-bottom: 40px;
+    }
+    .marks-inputs input {
+      width: 100%;
+      font-size: 23px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 2px solid #006400;
+      transition: border-color 0.3s ease;
+    }
+    .marks-inputs input:focus {
+      border-color: #004b00;
+      outline: none;
+    }
+    #resultLabel {
+      font-size: 28px;
+      color: black;
+      margin-bottom: 40px;
+      user-select: none;
+      font-weight: bold;
+    }
+    #exitBtn {
+      background-color: black;
+      color: #00ff00;
+      font-size: 30px;
+      padding: 12px 40px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    #exitBtn:hover,
+    #exitBtn:focus {
+      background-color: #222;
+      color: #0f0;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="welcomeScreen">
+    <h1>Instructions</h1>
+    <p>Enter the names of the subjects only you need, no need to fill the rest of the names.</p>
+    <button id="continueBtn">Continue</button>
+  </div>
+
+  <div class="container hidden" id="subjectsScreen">
+    <h1>Enter Names:</h1>
+    <form id="subjectsForm" class="form-grid" onsubmit="return false;">
+      <!-- Subject inputs will be inserted here -->
+    </form>
+    <button id="submitSubjectsBtn">Continue</button>
+  </div>
+
+  <div class="container hidden" id="marksScreen">
+    <h1>Enter Marks:</h1>
+    <div class="marks-grid">
+      <div>Subject</div>
+      <div>Obtained Marks</div>
+      <div>Total Marks</div>
+    </div>
+    <form id="marksForm" class="marks-inputs" onsubmit="return false;">
+      <!-- Marks inputs will be inserted here -->
+    </form>
+    <button id="calculateBtn">Submit</button>
+    <h2 id="resultLabel"></h2>
+    <button id="exitBtn">Exit</button>
+  </div>
+
+  <script>
+    const continueBtn = document.getElementById('continueBtn');
+    const submitSubjectsBtn = document.getElementById('submitSubjectsBtn');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const exitBtn = document.getElementById('exitBtn');
+
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const subjectsScreen = document.getElementById('subjectsScreen');
+    const marksScreen = document.getElementById('marksScreen');
+
+    const subjectsForm = document.getElementById('subjectsForm');
+    const marksForm = document.getElementById('marksForm');
+    const resultLabel = document.getElementById('resultLabel');
+
+    continueBtn.addEventListener('click', () => {
+      welcomeScreen.classList.add('hidden');
+      subjectsScreen.classList.remove('hidden');
+      createSubjectInputs();
+    });
+
+    function createSubjectInputs() {
+      subjectsForm.innerHTML = '';
+      for (let i = 1; i <= 8; i++) {
+        const label = document.createElement('label');
+        label.setAttribute('for', `subject${i}`);
+        label.textContent = `Subject number ${i}:`;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = `subject${i}`;
+        input.name = `subject${i}`;
+        input.placeholder = "Enter subject name";
+
+        subjectsForm.appendChild(label);
+        subjectsForm.appendChild(input);
+      }
+    }
+
+    submitSubjectsBtn.addEventListener('click', () => {
+      // Collect non-empty subject names
+      const subjects = [];
+      for (let i = 1; i <= 8; i++) {
+        const val = document.getElementById(`subject${i}`).value.trim();
+        if (val) {
+          subjects.push(val);
+        }
+      }
+      if (subjects.length === 0) {
+        alert('Please enter at least one subject name to continue.');
+        return;
+      }
+      subjectsScreen.classList.add('hidden');
+      marksScreen.classList.remove('hidden');
+      createMarksInputs(subjects);
+    });
+
+    function createMarksInputs(subjects) {
+      marksForm.innerHTML = '';
+
+      subjects.forEach((subject, idx) => {
+        const subLabel = document.createElement('div');
+        subLabel.textContent = subject;
+        subLabel.style.fontWeight = 'normal';
+        subLabel.style.fontSize = '26px';
+        subLabel.style.userSelect = 'text'; // subject name selectable
+
+        const obtainedInput = document.createElement('input');
+        obtainedInput.type = 'number';
+        obtainedInput.min = '0';
+        obtainedInput.placeholder = "Obtained Marks";
+        obtainedInput.className = 'obtained-input';
+        obtainedInput.name = `obtained${idx}`;
+
+        const totalInput = document.createElement('input');
+        totalInput.type = 'number';
+        totalInput.min = '0';
+        totalInput.placeholder = "Total Marks";
+        totalInput.className = 'total-input';
+        totalInput.name = `total${idx}`;
+
+        marksForm.appendChild(subLabel);
+        marksForm.appendChild(obtainedInput);
+        marksForm.appendChild(totalInput);
+      });
+
+      resultLabel.textContent = '';
+    }
+
+    calculateBtn.addEventListener('click', () => {
+      const obtainedInputs = document.querySelectorAll('.obtained-input');
+      const totalInputs = document.querySelectorAll('.total-input');
+
+      let totalObtained = 0;
+      let totalMax = 0;
+
+      for (let i = 0; i < obtainedInputs.length; i++) {
+        const obtainedValRaw = obtainedInputs[i].value.trim();
+        const totalValRaw = totalInputs[i].value.trim();
+
+        if (obtainedValRaw === '' && totalValRaw === '') {
+          continue; // skip empty rows
+        }
+
+        const obtainedVal = parseFloat(obtainedValRaw);
+        const totalVal = parseFloat(totalValRaw);
+
+        if (isNaN(obtainedVal) || isNaN(totalVal)) {
+          resultLabel.textContent = 'Error: Please enter valid numeric values for all filled marks.';
+          resultLabel.style.color = 'red';
+          return;
+        }
+
+        if (obtainedVal > totalVal) {
+          resultLabel.textContent = 'Error: Obtained marks cannot exceed total marks.';
+          resultLabel.style.color = 'red';
+          return;
+        }
+        if (obtainedVal < 0 || totalVal < 0) {
+          resultLabel.textContent = 'Error: Marks cannot be negative.';
+          resultLabel.style.color = 'red';
+          return;
+        }
+
+        totalObtained += obtainedVal;
+        totalMax += totalVal;
+      }
+
+      if (totalMax === 0) {
+        resultLabel.textContent = 'Error: Total marks must be greater than zero.';
+        resultLabel.style.color = 'red';
+        return;
+      }
+
+      const percentage = (totalObtained / totalMax) * 100;
+      resultLabel.textContent = `Total Percentage: ${percentage.toFixed(2)}%`;
+      resultLabel.style.color = 'black';
+    });
+
+    exitBtn.addEventListener('click', () => {
+      // Reset all screens and forms, return to welcome
+      marksForm.innerHTML = '';
+      subjectsForm.innerHTML = '';
+      resultLabel.textContent = '';
+
+      marksScreen.classList.add('hidden');
+      subjectsScreen.classList.add('hidden');
+      welcomeScreen.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
+
