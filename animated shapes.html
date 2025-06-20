@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Animated Shapes</title>
+  <style>
+    div {
+      float: left;
+      margin-right: 20px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    #circle {
+      background-color: #00ff00;
+      width: 100px;
+      height: 100px;
+      border-radius: 180px;
+    }
+
+    #circle:hover {
+      transform: scale(1.2) rotate(10deg);
+      background-color: limegreen;
+    }
+
+    #square {
+      background-color: blue;
+      width: 100px;
+      height: 100px;
+    }
+
+    #square:hover {
+      transform: rotate(45deg);
+      background-color: royalblue;
+    }
+
+    #rectangle {
+      background-color: firebrick;
+      width: 200px;
+      height: 100px;
+    }
+
+    #rectangle:hover {
+      transform: scaleX(1.5) rotate(-5deg);
+      background-color: tomato;
+    }
+
+    #triangle {
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 100px solid crimson;
+      transition: transform 0.3s ease;
+    }
+
+    #triangle:hover {
+      transform: translateY(-10px) rotate(10deg);
+    }
+  </style>
+</head>
+<body>
+  <h1>Different animated shapes:</h1>
+
+  <div id="circle"></div><br>
+  <h2>This is a circle</h2><br><br>
+
+  <div id="square"></div><br>
+  <h2>This is a square</h2><br><br>
+
+  <div id="rectangle"></div><br>
+  <h2>This is a rectangle</h2><br><br>
+
+  <div id="triangle"></div><br>
+  <h2>This is a triangle</h2>
+</body>
+</html>
