@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Grammar & Literary Devices To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Grammar & Literary Devices Checklist</h1>
+  <ul id="todo-list">
+    <!-- Items will be inserted here -->
+  </ul>
+
+  <script>
+    const topics = [
+      "Conditional", "Hyphenated noun and adjectives", "Nuances", "Infinitive", "Participles", "Gerund",
+      "Parts of speech / Article determiners", "Types of phrases and conjunctions", "Literary devices",
+      "Clauses and their types", "Direct and indirect speech", "Cohesive sentences", "Passive and active voice",
+      "Analyse (verb)", "Analysis (noun)", "Analytical (adjective)", "Quantifiers", "Singular and plural",
+      "Idioms", "Proverbs", "Stages of plot", "Types of verb", "Tenses", "Transitional devices",
+      "Type of sentences", "Predicate", "Punctuation", "Modal verb", "Euphemism", "Juxtaposition",
+      "Characterization", "Collocations"
+    ];
+
+    const list = document.getElementById("todo-list");
+
+    // Load saved state
+    const savedState = JSON.parse(localStorage.getItem("grammarChecklist")) || {};
+
+    topics.forEach((topic, index) => {
+      const li = document.createElement("li");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `topic-${index}`;
+      checkbox.checked = savedState[topic] || false;
+
+      checkbox.addEventListener("change", () => {
+        savedState[topic] = checkbox.checked;
+        localStorage.setItem("grammarChecklist", JSON.stringify(savedState));
+      });
+
+      const label = document.createElement("label");
+      label.htmlFor = checkbox.id;
+      label.textContent = topic;
+
+      li.appendChild(checkbox);
+      li.appendChild(label);
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>
